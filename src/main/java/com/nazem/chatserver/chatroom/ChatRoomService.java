@@ -58,7 +58,7 @@ public class ChatRoomService {
         List<User> users = chatRooms.stream().map(chatRoom -> {
             return userRepository.findByNickName(chatRoom.getRecipientId());
         }).toList();
-
+//
         return users;
     }
 }
