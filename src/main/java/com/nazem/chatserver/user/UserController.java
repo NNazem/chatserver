@@ -1,17 +1,19 @@
 package com.nazem.chatserver.user;
 
+import com.nazem.chatserver.services.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
-@CrossOrigin("*")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -35,33 +37,26 @@ public class UserController {
         return user;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/user")
     public ResponseEntity<List<User>> findConnectedUsers() {
         return ResponseEntity.ok(userService.findConnectedUsers());
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Boolean> login(@RequestBody LoginRequestDTO user) throws Exception {
-        try {
-            return ResponseEntity.ok(userService.login(user.getUsernameOrEmail(), user.getPassword()));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(false);
-        }
-    }
+    @GetMapping("/me")
+    public ResponseEntity<User> authenticatedUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    @PostMapping("/userSignup")
-    public ResponseEntity<?> signup(@RequestBody User user) {
-        try {
-            return ResponseEntity.ok(userService.signUpUser(user));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        User currentUser = (User) authentication.getPrincipal();
+
+        return ResponseEntity.ok(currentUser);
     }
 
     @GetMapping("/searchUser")
-    public ResponseEntity<List<User>> searchUser(@RequestParam String nickName) {
+    public ResponseEntity<List<String>> searchUser(@RequestParam String nickName) {
         return ResponseEntity.ok(userService.findAllUsers(nickName));
     }
+
+
 
 
 }
