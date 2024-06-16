@@ -18,7 +18,7 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
 
     @GetMapping("/searchConversation")
-    public ResponseEntity<List<User>> findAllConversation(@RequestParam String nickName) {
+    public ResponseEntity<List<String>> findAllConversation(@RequestParam String nickName) {
         return ResponseEntity.ok(chatRoomService.findConversations(nickName));
     }
 }

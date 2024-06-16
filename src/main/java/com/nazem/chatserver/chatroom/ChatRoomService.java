@@ -53,10 +53,10 @@ public class ChatRoomService {
         return chatId;
     }
 
-    public List<User> findConversations(String nickName){
+    public List<String> findConversations(String nickName){
         List<ChatRoom> chatRooms = chatRoomRepository.findAllBySenderId(nickName);
-        List<User> users = chatRooms.stream().map(chatRoom -> {
-            return userRepository.findByNickName(chatRoom.getRecipientId());
+        List<String> users = chatRooms.stream().map(chatRoom -> {
+            return userRepository.findByNickName(chatRoom.getRecipientId()).getNickName();
         }).toList();
 //
         return users;
