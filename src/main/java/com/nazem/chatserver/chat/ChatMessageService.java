@@ -28,4 +28,8 @@ public class ChatMessageService {
         var chatId = chatRoomService.getChatRoomId(senderId, recipientId, false);
         return chatId.map(repository::findByChatId).orElse(new ArrayList<>());
     }
+
+    public ChatMessage findLastMessage(String senderId, String recipientId) {
+        return repository.findFirstBySenderIdAndRecipientIdOrderByTimestampDesc(senderId, recipientId);
+    }
 }

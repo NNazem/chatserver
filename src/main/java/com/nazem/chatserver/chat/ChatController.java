@@ -42,6 +42,13 @@ public class ChatController {
                 .ok(chatMessageService.findChatMessages(senderId, recipientId));
     }
 
+    @GetMapping("/messages/lastmessage/{senderId}/{recipientId}")
+    public ResponseEntity<ChatMessage> findLastMessage(@PathVariable String senderId,
+                                                       @PathVariable String recipientId) {
+        return ResponseEntity
+                .ok(chatMessageService.findLastMessage(senderId, recipientId));
+    }
+
 
 
 }
