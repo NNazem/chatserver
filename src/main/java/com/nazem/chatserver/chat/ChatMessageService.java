@@ -30,6 +30,8 @@ public class ChatMessageService {
     }
 
     public ChatMessage findLastMessage(String senderId, String recipientId) {
-        return repository.findFirstBySenderIdAndRecipientIdOrderByTimestampDesc(senderId, recipientId);
+        ChatMessage firstMessage =  repository.findFirstBySenderIdAndRecipientIdOrderByTimestampDesc(senderId, recipientId);
+        ChatMessage secondMessage =  repository.findFirstBySenderIdAndRecipientIdOrderByTimestampDesc(recipientId, senderId);
+        return firstMessage.getTimestamp().after(secondMessage.getTimestamp()) ? firstMessage : secondMessage;
     }
 }
